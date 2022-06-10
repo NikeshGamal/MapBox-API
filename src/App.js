@@ -5,7 +5,6 @@ import InputField from './Components/InputField';
 function App() {
   return (
     <Container>
-      <h1 style={{color:"white",fontSize:"2.5rem"}}>GeoCoding with MapBox</h1>
       <InputField/>
    </Container>
   );
@@ -15,8 +14,8 @@ export default App;
 
 const Container = styled.div`
   padding:1em 1.5em;
-  width:100vw;
-  height:100vh;
+  max-width:100%;
+  height:95vh;
   display:flex;
   justify-content: center;
   align-items:center;
