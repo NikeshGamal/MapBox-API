@@ -10,23 +10,19 @@
     const [enterStatus, setEnterStatus] = useState(false);
 
     //************TODO: selectig from keydown***************
-    // const [suggestionIndex, setSuggestionIndex] = useState(null);
+    const [suggestionIndex, setSuggestionIndex] = useState(0);
 
-    // const handleSuggestions = (presentSuggestion)=>{
-    //   address.setValue(presentSuggestion.place_name);
-    // }
+    const handleDownArrow = (presentSuggestion)=>{
+      console.log("before change");
+      console.log(suggestionIndex);
+      setSuggestionIndex((suggestionIndex+1)%presentSuggestion.length);
+      console.log("after change");
+      console.log(suggestionIndex);
 
-    const updateEnterStatus = ()=>{
-      if(!enterStatus){
-        setEnterStatus(true);
-        console.log("entered status changed to true");
-      }else{
-        setEnterStatus(false);
-        address.setValue('');
-        address.setSuggestions([]);
-        console.log("entered status changed to false");
-      }
+      address.setValue(presentSuggestion[suggestionIndex].place_name);
     }
+
+   
 
     const updateLongitude= (suggestion) =>{
           setLongitude(suggestion.geometry.coordinates[0])
@@ -38,6 +34,22 @@
          console.log(suggestion.geometry.coordinates[1]);
     }
 
+
+    const updateEnterStatus = (presentSuggestion)=>{
+      if(!enterStatus){
+        setEnterStatus(true);
+        console.log("entered status changed to true");
+        address.setSuggestions([]);
+        updateLatitude(presentSuggestion[suggestionIndex]);
+        updateLongitude(presentSuggestion[suggestionIndex]);
+      }else{
+        setEnterStatus(false);
+        address.setValue('');
+        setSuggestionIndex(0);
+        address.setSuggestions([]);
+        console.log("entered status changed to false");
+      }
+    }
     return (
       <Wrapper>
         <h1 style={{color:"white",fontSize:"2.5rem"}}>GeoCoding with MapBox</h1>
@@ -46,16 +58,14 @@
           {...address}
           isTyping={address.value !== ""}
 
-          //************TODO: selectig from keydown***************
-          // onKeyDown={()=>{
-          //   console.log("Down key pressed");
-          //   handleSuggestions(address.suggestions);
-          // }}
+          //************selectig from keydown***************
+          onKeyDown={(e)=>{address.value !=="" && e.keyCode=== 40 && handleDownArrow(address.suggestions)
+          }}
 
           //when entered is pressed latitude and longitude value should be displayed
           onKeyPress={(e)=>{
               if(e.key==="Enter"){
-                  updateEnterStatus();
+                  updateEnterStatus(address.suggestions);
           }
         }
         }
@@ -71,7 +81,7 @@
                     address.setSuggestions([]);
                     updateLatitude(suggestion);
                     updateLongitude(suggestion);
-                    updateEnterStatus();
+                    updateEnterStatus(address.suggestions);
                   }
                 }
                 >

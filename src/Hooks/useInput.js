@@ -11,7 +11,7 @@ const [suggestions, setSuggestions] = useState([]);
 //2.handle the change since  for useInput, we need a form 
 const handleChange =  async (event)=>{
    setValue(event.target.value);// document.getElementById("input").value=event.target.value;
-
+   
    try{
  //endpoint
  const url = `https://api.mapbox.com/geocoding/v5/mapbox.places/${event.target.value}.json?access_token=pk.eyJ1IjoiZG90YmFzaWMiLCJhIjoiY2t6Z3FwaHZjMDR0azJ2cGFvaWdoNHN1eCJ9.Knhp1ipVGyO2yZZ2X4i_2Q&autocomplete=true`;
